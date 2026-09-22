@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CAGR Growth Guessing Game</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <h1>CAGR Growth Guessing Game</h1>
+      <label class="theme-toggle" for="themeToggle">
+        <span class="theme-toggle-label">Dark mode</span>
+        <input type="checkbox" id="themeToggle" />
+        <span class="theme-toggle-track" aria-hidden="true"><span class="theme-toggle-thumb"></span></span>
+      </label>
+    </div>
+    <p>Present value is fixed at 100. You are given a percentage return per period and a number of periods. Guess the final value.</p>
+
+    <div id="game">
+      <div class="number" id="percentDisplay"></div>
+      <div class="number" id="periodsDisplay"></div>
+
+      <label for="guessInput">Your guess for final value:</label>
+      <input type="number" id="guessInput" />
+      <button onclick="checkGuess()">Submit Guess</button>
+      <button onclick="newRound()">New Round</button>
+
+      <div class="result" id="result"></div>
+      <div class="history" id="history"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
