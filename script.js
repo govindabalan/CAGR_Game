@@ -1,5 +1,8 @@
 let percentageReturn, numberOfPeriods, finalValue, displayPct;
 let history = [];
+let roundNumber = 0;
+let lastReturnSign = null;
+let returnSignStreak = 0;
 
 function setTheme(isDark) {
   document.documentElement.dataset.theme = isDark ? 'dark' : 'light';
@@ -15,15 +18,32 @@ document.getElementById('themeToggle').addEventListener('change', (event) => {
 });
 
 function newRound() {
-  // percentage between -25% and +25% with 2-decimal display
-  const rawPct = (Math.random() - 0.5) * 50; // -25 to +25
+  roundNumber += 1;
+
+  // Start gently, then widen both ranges gradually from round 4 onward.
+  const maxReturn = Math.min(25, 5 + Math.max(0, roundNumber - 3) * 2);
+  const maxPeriods = Math.min(30, 5 + Math.max(0, roundNumber - 3) * 3);
+  let returnSign;
+
+  do {
+    returnSign = Math.random() < 0.5 ? -1 : 1;
+  } while (returnSign === lastReturnSign && returnSignStreak >= 3);
+
+  const minimumReturn = 1;
+  const rawPct = returnSign * (minimumReturn + Math.random() * (maxReturn - minimumReturn));
   displayPct = Math.round(rawPct * 100) / 100; // round to 2 decimals for display
+
+  if (returnSign === lastReturnSign) {
+    returnSignStreak += 1;
+  } else {
+    lastReturnSign = returnSign;
+    returnSignStreak = 1;
+  }
 
   // use the displayed percentage consistently for calculation
   percentageReturn = displayPct / 100; // decimal rate
 
-  // integer periods between 1 and 30
-  numberOfPeriods = Math.floor(Math.random() * 30) + 1;
+  numberOfPeriods = Math.floor(Math.random() * maxPeriods) + 1;
 
   finalValue = 100 * Math.pow(1 + percentageReturn, numberOfPeriods);
 
